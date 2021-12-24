@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,90 +14,103 @@
     <!-- git status -->
     <!-- git fetch (buscar atualizaçoes sem puxar) -->
     <style>
-        .marcar{
-            
-            text-decoration:line-through
+        .marcar {
+
+            text-decoration: line-through
         }
-       
     </style>
 </head>
+
 <body>
     <h1>Lista de Tarefas</h1>
 
-    <div class="dados">      
+    <div class="dados">
         <input id="escrever" type="text" placeholder="Adicione a nova tarefa">
 
-        <button id ="inserir">Inserir</button> 
-    </div>      
-
-    <div class="list">
-            <ul class="listas" id="ul"></ul>
+        <button id="inserir">Inserir</button>
     </div>
 
-        <script>
-    let btnInserir = document.getElementById('inserir')
-    let input = document.getElementById('escrever')
-    let ul = document.getElementById('ul')
-    let item = document.getElementsByTagName('li')
+    <div class="list">
+        <ul class="listas" id="ul"></ul>
+    </div>
 
-function inputLength(){
-    return input.value.length
-}
-function criarLista(){
-    let li = document.createElement('li')
+    <script>
+        let btnInserir = document.getElementById('inserir')
+        let input = document.getElementById('escrever')
+        let ul = document.getElementById('ul')
+        let item = document.getElementsByTagName('li')
 
-    li.appendChild(document.createTextNode(input.value))//inserir texto no formulario
+        function inputLength() {
+            return input.value.length
+        }
+        function criarLista() {
+            // Não adicionar tarefas duplicadas
+            // 1. Verificar as tarefas existentes
+            // tentar usar o getElementsByTagName
+            // iterar sobre o html collection para poder verificar as tarefas
+            // 2. Comparar a tarefa que estou inserindo com as tarefas existentes
+            // 3. Se houver alguma tarefa igual, não deixar inserir
 
-    ul.appendChild(li)
+            let items = document.getElementsByTagName('li');
+            for (let index = 0; index < items.length; index++) {
+                console.log(items[index].firstChild.textContent)
+            }
 
-    input.value = ''
+            let li = document.createElement('li')
+
+            li.appendChild(document.createTextNode(input.value))//inserir texto no formulario
+
+            ul.appendChild(li)
+
+            input.value = ''
 
 
-function  textMark(){
-        li.classList.add('marcar')
-    }
-    li.addEventListener('click', textMark)//evento marcar texto
-//--------------//-------------------//
+            function textMark() {
+                li.classList.add('marcar')
+            }
+            li.addEventListener('click', textMark)//evento marcar texto
+            //--------------//-------------------//
 
-/*
+            /*
+            
+            const limparTarefas = () => {
+                const List = document.querySelector('li')
+                while (List.firstChild) {
+                   List.removeChild(list.lastChild)
+                }   
+            
+            */
 
-const limparTarefas = () => {
-    const List = document.querySelector('li')
-    while (List.firstChild) {
-       List.removeChild(list.lastChild)
-    }   
+            //agora criar botão delete
+            let delBtn = document.createElement('button')
+            delBtn.appendChild(document.createTextNode('x'))
+            li.appendChild(delBtn)
 
-*/
+            delBtn.addEventListener('click', deleteItem)
 
-    //agora criar botão delete
-     let delBtn = document.createElement('button')
-    delBtn.appendChild(document.createTextNode('x'))
-    li.appendChild(delBtn)
+            function deleteItem() {
+                const listItem = this.parentNode
+                const list = listItem.parentNode;
+                console.log('isso e uma mudança')
 
-    delBtn.addEventListener('click', deleteItem)
+                list.removeChild(listItem);
+            }
+        }
+        btnInserir.addEventListener('click', addListAfterClick)
+        input.addEventListener('keypress', addListAfterkeypress)
 
-    function deleteItem( ) {
-    const listItem = this.parentNode    
-    const list = listItem.parentNode;
-    console.log('isso e uma mudança')
-    
-     list.removeChild(listItem);
-    }
-}
-    btnInserir.addEventListener('click', addListAfterClick)
-    input.addEventListener('keypress', addListAfterkeypress)
+        function addListAfterClick() {
+            while (inputLength() > 0) {
+                criarLista()
+            }
+        }
+        function addListAfterkeypress() {
+            while (inputLength() > 0 && event.which === 13) {
+                criarLista()
+            }
+        }
 
-function addListAfterClick() {
-       while(inputLength() > 0 ){
-        criarLista()
-       }
-}
-function addListAfterkeypress(){
-    while(inputLength() > 0 && event.which === 13) {
-    criarLista()
-    }
-}        
-    
-        </script>
+    </script>
 </body>
+
 </html>
