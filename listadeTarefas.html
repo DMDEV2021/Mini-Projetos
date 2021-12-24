@@ -52,46 +52,53 @@
             // 3. Se houver alguma tarefa igual, não deixar inserir
 
             let items = document.getElementsByTagName('li');
+            let itensIguais = false;
             for (let index = 0; index < items.length; index++) {
-                console.log(items[index].firstChild.textContent)
+                const textoLi = items[index].firstChild.textContent
+                if (textoLi == input.value) {
+                    itensIguais = true;
+                    window.alert('itens iguais')
+                }
             }
 
-            let li = document.createElement('li')
+            if (!itensIguais) {
+                let li = document.createElement('li')
 
-            li.appendChild(document.createTextNode(input.value))//inserir texto no formulario
+                li.appendChild(document.createTextNode(input.value))//inserir texto no formulario
 
-            ul.appendChild(li)
+                ul.appendChild(li)
+
+                function textMark() {
+                    li.classList.add('marcar')
+                }
+                li.addEventListener('click', textMark)//evento marcar texto
+                //--------------//-------------------//
+
+                /*
+                
+                const limparTarefas = () => {
+                    const List = document.querySelector('li')
+                    while (List.firstChild) {
+                       List.removeChild(list.lastChild)
+                    }   
+                
+                */
+
+                //agora criar botão delete
+                let delBtn = document.createElement('button')
+                delBtn.appendChild(document.createTextNode('x'))
+                li.appendChild(delBtn)
+
+                delBtn.addEventListener('click', deleteItem)
+            }
 
             input.value = ''
 
 
-            function textMark() {
-                li.classList.add('marcar')
-            }
-            li.addEventListener('click', textMark)//evento marcar texto
-            //--------------//-------------------//
-
-            /*
-            
-            const limparTarefas = () => {
-                const List = document.querySelector('li')
-                while (List.firstChild) {
-                   List.removeChild(list.lastChild)
-                }   
-            
-            */
-
-            //agora criar botão delete
-            let delBtn = document.createElement('button')
-            delBtn.appendChild(document.createTextNode('x'))
-            li.appendChild(delBtn)
-
-            delBtn.addEventListener('click', deleteItem)
 
             function deleteItem() {
                 const listItem = this.parentNode
                 const list = listItem.parentNode;
-                console.log('isso e uma mudança')
 
                 list.removeChild(listItem);
             }
